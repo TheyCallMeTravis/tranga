@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using API.MangaConnectors;
 using API.MangaDownloadClients;
@@ -20,7 +20,7 @@ public static class Tranga
     
     private static readonly ILog Log = LogManager.GetLogger(typeof(Tranga));
     internal static readonly MetadataFetcher[] MetadataFetchers = [new MyAnimeList()];
-    internal static readonly MangaConnector[] MangaConnectors = [new Global(), new AsuraComic(), new MangaDex(), new Mangaworld(), new WeebCentral()];
+    internal static readonly MangaConnector[] MangaConnectors = [new Global(), new AsuraComic(), new Hentai20(), new MangaDex(), new Mangaworld(), new OmegaScans(), new WeebCentral()];
     internal static readonly TrangaSettings Settings = TrangaSettings.Load();
     
     // ReSharper disable MemberCanBePrivate.Global
