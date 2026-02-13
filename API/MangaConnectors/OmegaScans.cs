@@ -46,7 +46,8 @@ public class OmegaScans : MangaConnector
             using StreamReader sr = new (result.Content.ReadAsStream());
             JObject jObject = JObject.Parse(sr.ReadToEnd());
 
-            lastPage = jObject.Value<int>("meta.lastPage");
+            lastPage = jObject["meta"]?["last_page"].Value<int>() ?? 1;
+			
             JArray? data = jObject["data"] as JArray;
             if (data is null)
             {
@@ -183,7 +184,8 @@ public class OmegaScans : MangaConnector
             using StreamReader sr = new (result.Content.ReadAsStream());
             JObject jObject = JObject.Parse(sr.ReadToEnd());
 
-            lastPage = jObject.Value<int>("meta.lastPage");
+            lastPage = jObject["meta"]?["last_page"].Value<int>() ?? 1;
+			
             JArray? data = jObject["data"] as JArray;
             if (data is null)
             {
