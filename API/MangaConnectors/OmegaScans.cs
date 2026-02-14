@@ -193,7 +193,12 @@ public class OmegaScans : MangaConnector
                 return new (Chapter, MangaConnectorId<Chapter>)[] { };
             }
             
-            chapters.AddRange(data.Select(d => ParseChapterFromJToken(mangaId, d)));
+            chapters.AddRange(
+				data
+					.Select(d => ParseChapterFromJToken(mangaId, d))
+					.Where(c => c.HasValue)
+					.Select(c => c.Value)
+			);
 			
 			page++;
         }
@@ -265,8 +270,17 @@ public class OmegaScans : MangaConnector
 		return imageUrls;
     }
 
-    private (Chapter chapter, MangaConnectorId<Chapter> id) ParseChapterFromJToken(MangaConnectorId<Manga> mcIdManga, JToken jToken)
+    private (Chapter chapter, MangaConnectorId<Chapter> id)? ParseChapterFromJToken(MangaConnectorId<Manga> mcIdManga, JToken jToken)
     {
+		int price = jToken.Value<int>("price");
+		
+		// Skip premium chapters
+		if (price != 0)
+		{
+			Log.InfoFormat("Skipping chapter {0} because the price is not 0 (price: {1})", jToken.Value<string>("chapter_name"), price);
+			return null;
+		}
+		
         string? id = jToken.Value<string>("id");
 		string? chapterName = jToken.Value<string>("chapter_name");
 		string? chapterSlug = jToken.Value<string>("chapter_slug");
